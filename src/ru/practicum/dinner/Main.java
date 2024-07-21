@@ -1,6 +1,8 @@
 package ru.practicum.dinner;
 
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -22,7 +24,9 @@ public class Main {
                 case "2":
                     generateDishCombo();
                     break;
-                case "3":
+                case "3": {
+                    System.out.println("Пусть Ваш бизнес процветает!");
+                }
                     return;
             }
         }
@@ -40,7 +44,7 @@ public class Main {
         String dishType = scanner.nextLine();
         System.out.println("Введите название блюда:");
         String dishName = scanner.nextLine();
-
+        DinnerConstructor.addMenu(dishType, dishName);
         // добавьте новое блюдо
     }
 
@@ -52,14 +56,34 @@ public class Main {
         scanner.nextLine();
 
         System.out.println("Вводите типы блюда, разделяя символом переноса строки (enter). Для завершения ввода введите пустую строку");
+
+        List<String> dishTypes = new ArrayList<>();
         String nextItem = scanner.nextLine();
 
         //реализуйте ввод типов блюд
         while (!nextItem.isEmpty()) {
+            if (DinnerConstructor.checkType(nextItem)) {
+                dishTypes.add(nextItem);
+            } else {
+                System.out.println("Тип блюда не найден: " + nextItem);
+                break;
+            }
+            nextItem = scanner.nextLine();
 
         }
 
-        // сгенерируйте комбинации блюд и выведите на экран
+        // Проверка, чтобы список типов блюд не был пустым
+        if (dishTypes.isEmpty()) {
+            System.out.println("Не было введено ни одного корректного типа блюда.");
+            return;
+        }
+
+        RandomGenerator randomGenerator = new RandomGenerator(DinnerConstructor.getMenu());
+        randomGenerator.generateCombinations(numberOfCombos, dishTypes);
+
+        System.out.println(" Надеюсь этот конструктор обедов поможет поварам и администрации накормить всех посетителей вкусными бизнес-ланчами!");
+    }
 
     }
-}
+
+
